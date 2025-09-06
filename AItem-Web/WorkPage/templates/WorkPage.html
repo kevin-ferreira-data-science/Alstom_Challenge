@@ -1,0 +1,88 @@
+{% extends 'LayoutEmpty.html' %}
+{% load static %}
+
+{% block main_empty %}
+
+    <div class="flex h-screen bg-gray-100">
+        <!-- Barre latérale -->
+        {% include "Sidebar.html" %}
+        <!-- Contenu principal -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <main class="flex-1 overflow-x-hidden overflow-y-auto">
+                <div class="container mx-auto p-4">
+                    <div class="bg-white p-1 rounded shadow">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 rounded-lg">
+                            <div>
+                                <h2 class="text-3xl font-semibold color-alstom-blue mb-3">Informations</h2>
+                                <h1 class="text-xl font-bold color-alstom-blue">{{ item.nom }}</h1>
+                                <div class="grid grid-cols-2 gap-2 mt-4">
+                                    <div class="text-gray-600">Catégorie :</div>
+                                    <div id="categorie"
+                                         class="text-gray-700 font-medium text-hover-alstom-red cursor-pointer"><i
+                                            class="fa-solid fa-arrow-up-right-from-square"></i> {{ item.categorie }}
+                                    </div>
+                                    <script>
+                                        // Si on clique sur la catégorie, on est redirigé vers la page de la catégorie
+                                        document.getElementById("categorie").addEventListener("click", function () {
+                                            window.location.href = "/dashboard/cluster/{{ categorie.id }}";
+                                        });
+                                    </script>
+
+                                    <div class="text-gray-600">Item le plus proche :</div>
+                                    <div id="item_plus_proche"
+                                         class="text-gray-700 font-medium text-hover-alstom-red cursor-pointer"><i
+                                            class="fa-solid fa-hammer"></i> {{ nomItemPlusProche }}</div>
+                                    <script>
+                                        // Si on clique sur la catégorie, on est redirigé vers la page de la catégorie
+                                        document.getElementById("item_plus_proche").addEventListener("click", function () {
+                                            showVoile();
+                                            window.location.href = "/dashboard/workpage/{{ idItemPlusProche }}";
+                                        });
+                                    </script>
+
+                                    <div class="text-gray-600">Surface :</div>
+                                    <div class="text-gray-700 font-medium">{{ itemSurface }} cm²</div>
+
+                                    <div class="text-gray-600">Volume :</div>
+                                    <div class="text-gray-700 font-medium">{{ itemVolume }} cm³</div>
+
+                                    <div class="text-gray-600">Nombre de sommets :</div>
+                                    <div class="text-gray-700 font-medium">{{ item.nombre_sommets }}</div>
+
+                                    <div class="text-gray-600">Prix prévisionnel :</div>
+                                    <div class="text-green-500 font-bold">{{ prix_previsionnel }} €</div>
+                                </div>
+                                <div>
+                                    <!-- Bouton pour voir le cluster de l'item -->
+
+                                </div>
+
+
+                            </div>
+                            <div class="bg-white p-1">
+                                <!-- Ici, vous pouvez inclure une image ou une autre visualisation de l'item si disponible -->
+                                {{ visualization_html|safe }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="bg-white p-1 rounded shadow">
+                            {{ visualization_html2|safe }}
+                        </div>
+                        <div class="bg-white p-1 rounded shadow">
+                            {{ chart_html_cluster|safe }}
+                        </div>
+                        <!-- Cette div occupera maintenant la largeur des deux colonnes au-dessus -->
+                        <div class="bg-white p-1 rounded shadow col-span-2">
+                            {{ chart_html_prix|safe }}
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        window.dispatchEvent(new Event('resize'));
+    </script>
+{% endblock %}

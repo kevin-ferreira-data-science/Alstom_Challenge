@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebResourcesPaths">
+    <contentEntries>
+      <entry url="file://$PROJECT_DIR$">
+        <entryData>
+          <resourceRoots>
+            <path value="file://$PROJECT_DIR$/static" />
+            <path value="file://$PROJECT_DIR$/LandingPage/static" />
+            <path value="file://$PROJECT_DIR$/WorkPage/static" />
+            <path value="file://$PROJECT_DIR$/AuthPage/static" />
+          </resourceRoots>
+        </entryData>
+      </entry>
+    </contentEntries>
+  </component>
+</project>

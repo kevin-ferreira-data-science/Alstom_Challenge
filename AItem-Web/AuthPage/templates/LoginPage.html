@@ -1,0 +1,71 @@
+<!-- LoginPage.html -->
+{% extends 'LayoutEmpty.html' %}
+{% load static %}
+
+{% block main_empty %}
+
+    <div class="flex items-center justify-center h-screen bg-alstom-blue">
+        <div class="bg-white p-8 rounded shadow-md w-96">
+            <!-- Image centrée -->
+            <div class="mb-2 text-center">
+                <img src="{% static 'assets/img/longueur.svg' %}" alt="Image de connexion"
+                     class="mx-auto mb-4 rounded-full w-48 h-16">
+            </div>
+
+            <h1 class="text-2xl font-semibold mb-6 color-alstom-blue text-center">Connexion</h1>
+
+            <form action="{% url 'authpage.views.login' %}" method="POST">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                    <!-- Affichage des erreurs -->
+                    <div class="mb-4">
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+                             role="alert">
+                            <strong class="font-bold">Erreur !</strong>
+                            {% for message in form.non_field_errors %}
+                                <span class="block">{{ message }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                <div class="mb-4">
+                    <label for="username" class="block text-sm font-medium text-gray-600">Nom d'utilisateur</label>
+                    {{ form.username }}
+
+                    {% if form.username.errors %}
+                        <!-- Affichage des erreurs -->
+                        <div class="mt-2 text-red-600 text-sm">
+                            {% for message in form.username.errors %}
+                                <span class="block sm:inline">{{ message }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="block text-sm font-medium text-gray-600">Mot de passe</label>
+                    {{ form.password }}
+
+                    {% if form.password.errors %}
+                        <!-- Affichage des erreurs -->
+                        <div class="mt-2 text-red-600 text-sm">
+                            {% for message in form.password.errors %}
+                                <span class="block sm:inline">{{ message }}</span>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <button type="submit" class="bg-alstom-blue text-white px-4 py-2 rounded w-full">Connexion</button>
+            </form>
+
+            <div class="mt-4 text-center">
+                <!-- Redirection sur l'accueil, "annuler" -->
+                <a href="{% url 'landingpage.views.home' %}" class="text-sm text-gray-600">Retour à l'accueil</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

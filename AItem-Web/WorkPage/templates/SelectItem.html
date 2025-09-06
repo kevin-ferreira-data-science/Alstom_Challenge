@@ -1,0 +1,143 @@
+{% extends 'LayoutEmpty.html' %}
+{% load static %}
+
+{% block main_empty %}
+    <div class="flex h-screen">
+        <!-- Menu latéral -->
+        {% include 'Sidebar.html' %}
+
+        <!-- Contenu principal -->
+        <div class="flex-1 overflow-auto">
+            <div class="container mx-auto p-4">
+                <!-- Conteneur de la barre de recherche et du bouton d'importation -->
+                <div class="flex justify-between mb-4 items-center">
+                    <!-- Barre de recherche -->
+                    <input type="text" id="searchInput" placeholder="Rechercher un item..."
+                           class="flex-grow px-4 py-2 rounded-lg bg-white text-gray-700 focus:outline-none focus:shadow-outline mr-4">
+                </div>
+                <!-- Suggestions d'items -->
+                <ul id="searchSuggestions" class="hidden bg-white shadow-md max-h-48 overflow-y-auto mt-2">
+                    <!-- Les suggestions s'afficheront ici -->
+                </ul>
+
+                <h1 class="text-2xl font-semibold mt-4 mb-6"><i class="fa-solid fa-cube mr-2"></i>{{ nom_cluster }}</h1>
+
+                <!-- Ici faire le contenu -->
+                <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <!-- On boucle sur chaque items -->
+                    {% for item in items %}
+                        <div class="flex gap-4 flex-col bg-white p-2 rounded shadow mb-4 item-div">
+                            <!-- On créer une div pour chaque item -->
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <!-- Logo et nom de l'item -->
+                                    <i class="fa-solid fa-cube mr-2 color-alstom-blue"></i>
+                                    <p class="font-semibold color-alstom-blue item-name">{{ item.nom }}</p>
+                                </div>
+                                <div class="flex items-center">
+                                    <!-- Logo pour rediriger vers la workpage -->
+                                    <i class="fa-solid fa-hammer cursor-pointer p-2 color-alstom-blue text-hover-alstom-red"></i>
+                                    <!-- script si on clique sur le marteau, redirection vers la workpage -->
+                                    <script>
+                                        $(document).ready(function () {
+                                            $(".fa-hammer").click(function () {
+                                                showVoile();
+                                                window.location.href = "/dashboard/workpage/" + {{ item.id }} + "/";
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center h-96" id="{{ item.id }}">
+                                <div class="flex flex-col items-center justify-center">
+                                    <i class="fa-solid fa-spinner fa-spin-pulse color-alstom-blue"></i>
+                                    <span class="color-alstom-blue">Génération du modèle 3D...</span>
+                                </div>
+                                <!-- Requête ajax pour récupérer le graphique -->
+                                <script>
+                                    $(document).ready(function () {
+                                        console.log("ready!");
+                                        $.ajax({
+                                            url: "/dashboard/get3D/" + {{ item.id }},
+                                            type: 'GET',
+                                            dataType: 'json',
+                                            success: function (data) {
+                                                // Suppression du contenu de la div de chargement
+                                                let loadingDiv = document.getElementById("{{ item.id }}");
+                                                loadingDiv.innerHTML = "";
+
+                                                // Ciblez l'élément spécifique pour afficher le graphique
+                                                let targetElement = document.getElementById("{{ item.id }}");
+
+                                                // Utilisez les données du graphique Plotly reçues
+                                                let plotData = JSON.parse(data.plot_data);
+
+                                                // Créez le graphique Plotly avec les données
+                                                Plotly.newPlot(targetElement, plotData.data, plotData.layout);
+                                            },
+                                            error: function (xhr, status, error) {
+                                                console.error(error);
+                                            },
+                                            complete: function () {
+                                                console.log("complete!");
+                                            }
+                                        });
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Gestion des catégories
+        const categories = document.querySelectorAll('#categories > div');
+        categories.forEach(category => {
+            category.addEventListener('click', () => {
+                const itemsId = category.dataset.target;
+                const itemsContainer = document.getElementById(itemsId);
+                itemsContainer.classList.toggle('hidden');
+            });
+        });
+
+        // Gestion de la barre de recherche
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchInput = document.getElementById('searchInput');
+            const suggestionsContainer = document.getElementById('searchSuggestions');
+            const itemDivs = document.querySelectorAll('.item-div');
+
+            searchInput.addEventListener('input', function () {
+                const query = this.value.trim().toLowerCase();
+
+                if (query.length > 1) {
+                    itemDivs.forEach(itemDiv => {
+                        const itemName = itemDiv.querySelector('.item-name').textContent.toLowerCase();
+
+                        if (itemName.includes(query)) {
+                            itemDiv.classList.remove('hidden');
+                        } else {
+                            itemDiv.classList.add('hidden');
+                        }
+                    });
+
+                    suggestionsContainer.innerHTML = '';
+                    suggestionsContainer.classList.add('hidden');
+                } else {
+                    itemDivs.forEach(itemDiv => {
+                        itemDiv.classList.remove('hidden');
+                    });
+
+                    suggestionsContainer.innerHTML = '';
+                    suggestionsContainer.classList.add('hidden');
+                }
+            });
+
+            function selectItem(item) {
+                window.location.href = `/dashboard/workpage/${item.id}/`;
+            }
+        });
+    </script>
+{% endblock %}

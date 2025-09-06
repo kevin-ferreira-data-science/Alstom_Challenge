@@ -1,0 +1,307 @@
+{% load static %}
+
+<div class="w-64 bg-alstom-blue text-white flex flex-col">
+    <div onclick="window.location.href='{% url 'workpage.views.dashboard-home' %}';"
+         class="cursor-pointer px-4 py-3 text-xl font-semibold border-b border-gray-700 flex items-center">
+        <a href="{% url 'landingpage.views.home' %}">
+            <img src="{% static 'assets/img/logo.svg' %}" width="40" class="cursor-pointer mr-4" alt="logo">
+        </a>
+        <span class="select-none">Dashboard</span>
+    </div>
+
+    <div id="upload-btn"
+         class="flex items-center text-m font-semibold rounded-lg m-2 mb-1 p-2 cursor-pointer bg-alstom-blue hover:bg-gray-700">
+        <i class="fa-solid fa-upload mr-2"></i>
+        <span class="select-none">Importer</span>
+    </div>
+    <input type="file" id="file-input" name="file" class="hidden" multiple>
+    <script>
+        $(document).ready(function () {
+            let uploadBtn = $('#upload-btn');
+            let fileInput = $('#file-input');
+
+            uploadBtn.on('click', function () {
+                fileInput.click(); // Ouvre la boîte de dialogue de sélection de fichiers
+            });
+
+            fileInput.on('change', function () {
+                // Vérifie si des fichiers ont été sélectionnés
+                if (fileInput[0].files.length > 0) {
+                    handleFileSelection(); // Gère la sélection de fichiers
+                }
+            });
+
+            function handleFileSelection() {
+                // Il faudra activer le voile ici
+                showVoileImportation();
+
+                // Création du formulaire avec comme id 'upload-form'
+                let form = new FormData();  // Utilisation directe de FormData
+
+                // Ajout des fichiers au formulaire
+                for (let i = 0; i < fileInput[0].files.length; i++) {
+                    form.append('file', fileInput[0].files[i]);
+                }
+
+                // Token CSRF
+                form.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+
+                $.ajax({
+                    url: "{% url 'workpage.views.upload_file' %}",
+                    type: 'POST',
+                    data: form,
+                    processData: false,
+                    contentType: false,
+                    dataType: 'json',
+                    success: function (response) {
+                        console.log("Réponse du serveur :", response);
+                        if (response.status === "success") {
+                            window.location.href = '{% url 'workpage.views.dashboard-home' %}';
+                        } else {
+                            alert("Erreur lors de l'envoi du fichier !");
+                            // Gérer l'erreur, éventuellement réafficher le bouton et masquer l'indicateur de chargement
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    },
+                    complete: function () {
+                        // Il faudra désactiver le voile ici
+                        hideVoile();
+                    }
+                });
+            }
+        });
+    </script>
+
+    <div onclick="showVoile(); window.location.href='{% url 'workpage.views.dashboard-home' %}';"
+         class="flex items-center text-m font-semibold rounded-lg m-2 mt-1 p-2 cursor-pointer{% if page == 'select_categories' %} bg-gray-600 {% else %} bg-alstom-blue hover:bg-gray-700{% endif %}">
+        <i class="fa-solid fa-cubes mr-2"></i>
+        <span class="select-none">Catégories</span>
+    </div>
+
+    <div class="border-b border-gray-700"></div>
+
+    <!-- Section d'historique de navigation ajustée -->
+    <h3 class="select-none px-4 pt-2 text-lg font-semibold">Historique</h3>
+    <div class="flex-grow p-2 overflow-hidden">
+        <ul id="navigationHistory" class="flex flex-col overflow-y-auto h-full text-sm">
+            <!-- Les liens d'historique seront insérés ici par JavaScript -->
+            <!-- Logo de chargement -->
+            <li>
+                <div class="flex items-center justify-center h-16">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="p-2 border-t border-gray-700 relative">
+        <!-- Afficher le nom d'utilisateur (nom et prénom si non vide sinon nom d'utilisateur) -->
+        {% if user.first_name or user.last_name %}
+            <div id="userButton"
+                 class="flex items-center rounded-lg px-2 py-3 cursor-pointer bg-alstom-blue hover:bg-gray-700">
+                <span class="fa-stack fa-lg mr-2">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-user fa-stack-1x color-alstom-blue"></i>
+                </span>
+                <span class="select-none text-sm font-semibold">
+                    {{ user.first_name|capfirst }} {{ user.last_name|upper }}
+                </span>
+            </div>
+        {% else %}
+            <div id="userButton"
+                 class="flex items-center rounded-lg px-2 py-3 cursor-pointer bg-alstom-blue hover:bg-gray-700">
+                <span class="fa-stack fa-lg mr-2">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-user fa-stack-1x color-alstom-blue"></i>
+                </span>
+                <span class="select-none text-sm font-semibold">
+                    {{ user.username }}
+                </span>
+            </div>
+        {% endif %}
+
+        <!-- Popup pour "Paramètres" et "Déconnexion" -->
+        <div id="userPopup" class="hidden absolute my-2 p-2 bg-alstom-blue border border-gray-700 rounded-lg shadow-lg"
+             style="right: 0.5rem; bottom: 100%; width: calc(100% - 1rem); transition: opacity 0.3s, transform 0.3s; opacity: 0; transform: translateY(20px);">
+            <ul>
+                <li class="select-none rounded-lg p-2 cursor-pointer bg-alstom-blue hover:bg-gray-700"
+                    onclick="window.location.href='{% url 'admin:index' %}';">
+                    <i class="fas fa-cog mr-2"></i>Paramètres
+                </li>
+                <li class="select-none rounded-lg p-2 cursor-pointer bg-alstom-blue hover:bg-gray-700"
+                    onclick="window.location.href='{% url 'authpage.views.logout' %}';">
+                    <i class="fas fa-sign-out-alt mr-2"></i>Déconnexion
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // *** HISTORIQUE ***
+        const historyContainer = document.getElementById('navigationHistory');
+        const itemID = {{ item.id|default:0 }}; // ID de l'item actuel
+
+        $.ajax({
+            url: "{% url 'workpage.views.history' %}",
+            type: 'GET',
+            dataType: 'json',
+            success: function (historiques) {
+                // Vider la liste
+                historyContainer.innerHTML = '';
+
+                // Si pas d'historique, afficher un message avec une icône 'non trouvé'
+                if (historiques.length === 0) {
+                    let li = document.createElement('li');
+                    li.classList.add('p-2', 'rounded-lg', 'text-gray-400');
+                    let divContainer = document.createElement('div');
+                    divContainer.classList.add('flex', 'items-center', 'justify-between'); // Utilise la classe 'flex' pour aligner les éléments horizontalement
+
+                    let icon = document.createElement('i');
+                    icon.classList.add('fa-solid', 'fa-search', 'mr-3'); // Ajoute la classe 'mr-2' pour ajouter de l'espace à droite de l'icône
+                    let text = document.createElement('p');
+                    text.textContent = 'Aucun historique';
+                    text.classList.add('block', 'flex-grow');
+
+                    // Ajoute les éléments à la structure DOM
+                    historyContainer.appendChild(li);
+                    li.appendChild(divContainer);
+                    divContainer.appendChild(icon);
+                    divContainer.appendChild(text);
+                    return;
+                }
+
+                // Remplir la liste avec les éléments de l'historique
+                historiques.forEach(history => {
+                    let li = document.createElement('li');
+                    li.classList.add('p-2', 'cursor-pointer', 'rounded-lg', 'li_hover');
+                    if (history.id === itemID) {
+                        li.classList.add('bg-gray-600');
+                    } else {
+                        li.classList.add('hover:bg-gray-700');
+                    }
+                    let divContainer = document.createElement('div');
+                    divContainer.classList.add('flex', 'items-center', 'justify-between'); // Utilise la classe 'flex' pour aligner les éléments horizontalement
+
+                    let icon = document.createElement('i');
+                    icon.classList.add('fa-solid', 'fa-cube', 'mr-3'); // Ajoute la classe 'mr-2' pour ajouter de l'espace à droite de l'icône
+                    let text = document.createElement('p');
+                    text.textContent = history.nom;
+                    text.classList.add('block', 'flex-grow', 'select-none', 'break-word');
+
+                    // Ajouter un bouton de suppression avec une icône de croix
+                    let deleteIcon = document.createElement('i');
+                    deleteIcon.classList.add('fa-solid', 'fa-times', 'p-2', 'ml-1', 'text-white', 'cursor-pointer', 'text-hover-alstom-red');
+                    if (history.id !== itemID) {
+                        deleteIcon.classList.add('opacity-0');
+                    }
+                    deleteIcon.addEventListener('click', (event) => {
+                        event.stopPropagation(); // Empêche la propagation du clic pour ne pas déclencher le gestionnaire 'li' en même temps
+
+                        if (deleteIcon.classList.contains('fa-spinner')) {
+                            return;
+                        }
+
+                        // Remplacer par icône de chargement
+                        deleteIcon.classList.remove('fa-times');
+                        deleteIcon.classList.add('fa-spinner', 'fa-spin');
+
+                        $.ajax({
+                            // Replace last '0' found in url by history.id
+                            url: "{% url 'workpage.views.delete_history' 0 %}".replace(/0(?!.*0)/, history.id),
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function (data) {
+                                console.log(data);
+                                li.remove();
+
+                                // Si plus d'historique, afficher un message avec une icône 'non trouvé'
+                                if (historyContainer.children.length === 0) {
+                                    let li = document.createElement('li');
+                                    li.classList.add('p-2', 'rounded-lg', 'text-gray-400');
+                                    let divContainer = document.createElement('div');
+                                    divContainer.classList.add('flex', 'items-center', 'justify-between'); // Utilise la classe 'flex' pour aligner les éléments horizontalement
+
+                                    let icon = document.createElement('i');
+                                    icon.classList.add('fa-solid', 'fa-search', 'mr-3'); // Ajoute la classe 'mr-2' pour ajouter de l'espace à droite de l'icône
+                                    let text = document.createElement('p');
+                                    text.textContent = 'Aucun historique';
+                                    text.classList.add('block', 'flex-grow');
+
+                                    // Ajoute les éléments à la structure DOM
+                                    historyContainer.appendChild(li);
+                                    li.appendChild(divContainer);
+                                    divContainer.appendChild(icon);
+                                    divContainer.appendChild(text);
+                                }
+                            },
+                            error: function (data) {
+                                console.log(data);
+                            }
+                        });
+                    });
+
+                    // Ajoute les éléments à la structure DOM
+                    if (historyContainer.firstChild) {
+                        historyContainer.insertBefore(li, historyContainer.firstChild);
+                    } else {
+                        historyContainer.appendChild(li);
+                    }
+                    li.appendChild(divContainer);
+                    divContainer.appendChild(icon);
+                    divContainer.appendChild(text);
+                    divContainer.appendChild(deleteIcon); // Ajoute le bouton de suppression
+
+                    if (history.id !== itemID) {
+                        // Gestionnaire d'événements pour afficher le bouton de suppression au survol
+                        li.addEventListener('mouseenter', () => {
+                            deleteIcon.style.opacity = '100';
+                        });
+                        li.addEventListener('mouseleave', () => {
+                            deleteIcon.style.opacity = '0';
+                        });
+                    }
+
+                    // Redirection sur clic
+                    li.addEventListener('click', () => {
+                        showVoile();
+                        window.location.href = `/dashboard/workpage/${history.id}/`;
+                    });
+                });
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+
+        // *** UTILISATEUR ***
+        const userButton = document.getElementById('userButton');
+        const userPopup = document.getElementById('userPopup');
+
+        userButton.addEventListener('click', function () {
+            userPopup.classList.toggle('hidden');
+            userPopup.classList.toggle('show');
+
+            // Triggering a reflow to make sure the transition is applied when the class is added
+            setTimeout(function () {
+                if (userPopup.classList.contains('show')) {
+                    userPopup.style.opacity = '1';
+                    userPopup.style.transform = 'translateY(0)';
+                } else {
+                    userPopup.style.opacity = '0';
+                    userPopup.style.transform = 'translateY(20px)';
+                }
+            }, 0);
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!userButton.contains(event.target) && !userPopup.contains(event.target)) {
+                userPopup.classList.add('hidden');
+                userPopup.classList.remove('show');
+            }
+        });
+    });
+</script>

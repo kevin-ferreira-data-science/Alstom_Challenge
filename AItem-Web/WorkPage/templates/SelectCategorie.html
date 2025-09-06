@@ -1,0 +1,149 @@
+{% extends 'LayoutEmpty.html' %}
+{% load static %}
+
+{% block main_empty %}
+    <div class="flex h-screen">
+        <!-- Menu latéral -->
+        {% include 'Sidebar.html' %}
+
+        <!-- Contenu principal -->
+        <div class="flex-1 overflow-auto">
+            <div class="container mx-auto p-4">
+                <!-- Conteneur de la barre de recherche -->
+                <div class="flex justify-between mb-4 items-center">
+                    <!-- Barre de recherche -->
+                    <input type="text" id="searchInput" placeholder="Rechercher un item..."
+                           class="flex-grow px-4 py-2 rounded-lg bg-white text-gray-700 focus:outline-none focus:shadow-outline mr-4">
+                </div>
+                <!-- Suggestions d'items -->
+                <ul id="searchSuggestions" class="hidden bg-white shadow-md max-h-48 overflow-y-auto mt-2">
+                    <!-- Les suggestions s'afficheront ici -->
+                </ul>
+
+                <h1 class="text-2xl font-semibold mt-4 mb-6"><i class="fa-solid fa-cubes mr-2"></i>Catégories</h1>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="categories">
+                    {% for categorie in categories %}
+                        <div class="bg-gray-100 rounded-lg shadow-md p-4 cursor-pointer hover:bg-gray-300 box_categorie"
+                             data-target="items-{{ categorie.id }}">
+                            <div class="flex items-center justify-between mb-2">
+                                <h2 class="text-2xl font-semibold select-none">{{ categorie.nom }}</h2>
+                                <i class="fa-solid fa-arrow-up-right-from-square redirect-icon p-2 text-hover-alstom-red hover:bg-white hover:bg-opacity-25 rounded-md"></i>
+                            </div>
+                            <p class="text-gray-500 mb-2 select-none">{{ categorie.items.count }} Items</p>
+                            <div class="hidden grid grid-cols-1 sm:grid-cols-2 gap-4 break-word" id="items-{{ categorie.id }}">
+                                {% for item in categorie.items.all %}
+                                    <div class="bg-alstom-blue text-white p-2 rounded-lg hover:shadow-lg transition-colors duration-200 bg-alstom-blue hover:bg-gray-700 transform hover:scale-105 mb-2">
+                                        <a href="{% url 'workpage.views.workpage' item.id %}"
+                                           onclick="event.stopPropagation(); showVoile();"
+                                           class="text-sm font-semibold hover:text-white block">
+                                            {{ item.nom }}
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <script>
+                    // Ajouter un gestionnaire d'événements à chaque icône avec la classe 'redirect-icon'
+                    var redirectIcons = document.querySelectorAll('.redirect-icon');
+
+                    redirectIcons.forEach(function (icon, index) {
+                        icon.addEventListener('click', function () {
+                            // Empêcher la propagation de l'événement de clic vers le conteneur de la catégorie
+                            event.stopPropagation();
+
+                            // Récupérer la valeur categorie.id du conteneur de la catégorie parente et rediriger vers la page cluster
+                            window.location.href = `/dashboard/cluster/${icon.parentNode.parentNode.dataset.target.split('-')[1]}/`;
+                        });
+                    });
+                </script>
+
+                <script>
+                    // Gestion des catégories
+                    const categories = document.querySelectorAll('#categories > div');
+                    categories.forEach(category => {
+                        category.addEventListener('click', () => {
+                            const itemsId = category.dataset.target; // Utilise dataset pour obtenir l'ID
+                            const itemsContainer = document.getElementById(itemsId);
+                            itemsContainer.classList.toggle('hidden'); // Utilise toggle pour afficher/masquer
+                        });
+                    });
+
+                    // Gestion de la barre de recherche
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const searchInput = document.getElementById('searchInput');
+                        const suggestionsContainer = document.getElementById('searchSuggestions');
+
+                        searchInput.addEventListener('input', function () {
+                            const query = this.value.trim();
+                            if (query.length > 1) {  // Commencez la recherche après au moins 2 caractères
+                                fetch(`/dashboard/search/?q=${encodeURIComponent(query)}`)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        suggestionsContainer.innerHTML = '';
+                                        data.results.forEach(item => {
+                                            let li = document.createElement('li');
+                                            li.classList.add('suggestion-item');  // Ajoutez les classes CSS nécessaires
+
+                                            // on fait un i fa-cube
+                                            let i = document.createElement('i');
+                                            i.classList.add('fa-solid', 'fa-cube', 'mr-2');
+
+                                            // on fait un p
+                                            let p = document.createElement('p');
+                                            p.textContent = item.nom;
+
+                                            // Utilisation de flex pour aligner les éléments en ligne
+                                            li.style.display = 'flex';
+
+                                            // Centrage vertical des éléments à l'intérieur du conteneur flexible
+                                            li.style.alignItems = 'center';
+
+                                            li.appendChild(i);
+                                            li.appendChild(p);
+
+                                            // Ajout de l'événement de clic
+                                            li.addEventListener('click', () => selectItem(item));
+
+                                            // Ajout à la liste des suggestions
+                                            suggestionsContainer.appendChild(li);
+                                        });
+                                        suggestionsContainer.classList.remove('hidden');
+                                    });
+                            } else {
+                                suggestionsContainer.innerHTML = '';
+                                suggestionsContainer.classList.add('hidden');
+                            }
+                        });
+
+                        function selectItem(item) {
+                            window.location.href = `/dashboard/workpage/${item.id}/`;  // Redirige vers la page de l'item
+                        }
+                    });
+
+                    // Fermer les suggestions lors du clic en dehors de la barre de recherche
+                    document.addEventListener('click', function (event) {
+                        const searchInput = document.getElementById('searchInput');
+                        const suggestionsContainer = document.getElementById('searchSuggestions');
+
+                        // Vérifiez si le clic n'est pas dans la barre de recherche ni dans les suggestions
+                        if (event.target !== searchInput && !searchInput.contains(event.target) &&
+                            event.target !== suggestionsContainer && !suggestionsContainer.contains(event.target)) {
+                            suggestionsContainer.classList.add('hidden'); // Masquer les suggestions
+                        }
+                    });
+
+                    // Ajout evenement quand on clique dans la barre de recherche
+                    document.getElementById('searchInput').addEventListener('click', function () {
+                        // on déclanche l'évent input
+                        this.dispatchEvent(new Event('input'));
+                    });
+                </script>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

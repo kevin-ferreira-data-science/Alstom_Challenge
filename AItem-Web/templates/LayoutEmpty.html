@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- CSS -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <!-- Bibliothèques -->
+    <!-- Font Awesome -->
+    <link href="{% static 'assets/fontawesome-6.5.1/css/all.min.css' %}" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <link href="{% static 'assets/tailwindcss-2.2.19/tailwind.min.css' %}" rel="stylesheet">
+
+    <!-- jQuery -->
+    <script src="{% static 'assets/jquery-3.7.1/jquery-3.7.1.min.js' %}"></script>
+
+    <!-- Plotly -->
+    <script src="{% static 'assets/plotly-1.58.5/plotly-1.58.5.min.js' %}"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    {% block head1 %}{% endblock %}
+    {% block head2 %}{% endblock %}
+    {% block head3 %}{% endblock %}
+    {% block head4 %}{% endblock %}
+    {% block head5 %}{% endblock %}
+
+
+</head>
+<body class="  flex-col w-full">
+
+<div id="voile" class="voile">
+    <div class="voile-content">
+        <i class="fa-solid fa-spinner fa-spin-pulse"></i>
+        <span id="messageSpan"></span>
+    </div>
+</div>
+
+<div id="wrapper" class="min-h-screen flex flex-col">
+    {% block main_empty %}{% endblock %}
+</div>
+
+</body>
+
+<script>
+    function showVoile() {
+        let voile = document.getElementById('voile');
+        voile.style.display = 'block';
+        let messageSpan = document.getElementById('messageSpan');
+        messageSpan.innerHTML = "Chargement en cours...";
+    }
+
+    function hideVoile() {
+        let voile = document.getElementById('voile');
+        voile.style.display = 'none';
+        // on remet le message de base
+        let messageSpan = document.getElementById('messageSpan');
+        messageSpan.innerHTML = "Chargement en cours...";
+    }
+
+    function showVoileWithMessage(message) {
+        let voile = document.getElementById('voile');
+        let messageSpan = document.getElementById('messageSpan');
+        messageSpan.innerHTML = message;
+        voile.style.display = 'block';
+    }
+
+    function showVoileImportation() {
+        let voile = document.getElementById('voile');
+        let messageSpan = document.getElementById('messageSpan');
+        messageSpan.innerHTML = "Importation en cours...";
+        voile.style.display = 'block';
+
+        const aiPhrases = [
+            "Apprentissage automatique en cours...",
+            "Optimisation des hyperparamètres...",
+            "Entraînement du modèle en progression...",
+            "Validation croisée en action...",
+            "Analyse des données en cours...",
+            "Traitement du big data initié...",
+            "Extraction des caractéristiques en cours...",
+            "Réseau neuronal en phase d'entraînement...",
+            "Algorithme génétique en exécution...",
+            "Apprentissage profond en activation...",
+            "Analyse prédictive en traitement...",
+            "Classification des données en cours...",
+            "Clustering en progression...",
+            "Régression linéaire en calcul...",
+            "Détection d'anomalies initiée...",
+            "Renforcement de l'apprentissage en cours...",
+            "Optimisation par essaim particulaire en action...",
+            "Traitement du langage naturel en cours...",
+            "Vision par ordinateur activée...",
+            "Analyse de sentiments en exécution...",
+            "Modélisation prédictive en construction...",
+            "Analyse en Composantes Principales (ACP) en cours...",
+            "Sélection de caractéristiques en action...",
+            "Réduction de dimensionnalité en traitement...",
+            "Apprentissage par transfert en initiation...",
+            "Sélection de modèles en progression...",
+            "Optimisation de la fonction de coût en cours...",
+            "Équilibrage de l'ensemble d'apprentissage en action...",
+            "Construction de l'arbre de décision en cours...",
+            "Exécution de l'algorithme de clusterisation..."
+        ];
+
+        // On affiche une phrase aléatoire du tableau toutes les 3 secondes
+        let tailleTableau = aiPhrases.length;
+        // Tant que le voile est affiché
+        // Tant que le voile est affiché
+        let interval = setInterval(function () {
+            if (voile.style.display === 'block') {
+                // On affiche une phrase aléatoire
+                let index = Math.floor(Math.random() * tailleTableau);
+                messageSpan.textContent = aiPhrases[index];
+
+                // On génère un nouvel intervalle aléatoire pour le prochain tour
+                let newInterval = getRandomInterval();
+                clearInterval(interval); // On arrête l'intervalle actuel
+                interval = setInterval(arguments.callee, newInterval); // On redémarre l'intervalle avec le nouvel intervalle
+            } else {
+                // On arrête l'intervalle
+                clearInterval(interval);
+            }
+        }, getRandomInterval());
+    }
+
+    // Fonction pour obtenir un intervalle aléatoire entre 1,5 et 5 secondes
+    function getRandomInterval() {
+        return Math.random() * (5000 - 1500) + 1500;
+    }
+
+    // Ajoutez un écouteur d'événement pageshow pour détecter le retour du navigateur
+    window.addEventListener('pageshow', function(event) {
+        // Vérifiez si l'événement est causé par un retour du navigateur
+        if (event.persisted) {
+            // Exécutez hideVoile() lorsque l'événement pageshow est déclenché après un retour
+            hideVoile();
+        }
+    });
+</script>
+</html>

@@ -1,0 +1,376 @@
+{% extends 'LayoutLandingPage.html' %}
+
+{% block title %}AItem - Accueil{% endblock %}
+
+{% block head2 %}{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<div id="landingPageBackground"
+    class="flex bg-fixed flex-col relative justify-start items-start bg-cover bg-center bg-no-repeat fond1 vw-full"
+    style="background-image: url('{% static 'assets/img/bg-landingpage/fond-z.jpg' %}');">
+
+    <script>
+        // Liste des noms de fichiers d'images dans le dossier bg-landingpage
+        let imageNames = ['fond-z.jpg', 'fond-1.jpg', 'fond-2.jpg', 'fond-3.jpg', 'fond-4.jpg', 'fond-5.jpg', 'fond-6.jpg', 'fond-7.jpg']; // Ajoutez les noms de vos images
+
+        let currentImageIndex = 0 // Commencez par la deuxième image pour assurer une transition en douceur dès le début
+        let landingPageBackground = document.getElementById('landingPageBackground');
+
+        let backgroundTimer = setInterval(showNextImage, 15000);
+
+        function changeBackgroundImage() {
+            console.log('Changing background image...');
+            // Construction du chemin de l'image
+            let imagePath = "{% static 'assets/img/bg-landingpage/' %}" + imageNames[currentImageIndex];
+
+            // Changement de l'image de fond avec une transition en douceur
+            landingPageBackground.style.backgroundImage = "url('" + imagePath + "')";
+        }
+
+        function showPreviousImage() {
+            console.log('Showing previous image...');
+            clearInterval(backgroundTimer); // Réinitialiser le minuteur
+            currentImageIndex = (currentImageIndex - 1 + imageNames.length) % imageNames.length;
+            changeBackgroundImage();
+        }
+
+        function showNextImage() {
+            console.log('Showing next image...');
+            clearInterval(backgroundTimer); // Réinitialiser le minuteur
+            currentImageIndex = (currentImageIndex + 1) % imageNames.length;
+            changeBackgroundImage();
+        }
+    </script>
+
+    <div class="flex flex-grow  flex-row justify-between items-center px-5 text-gray-100 fa-2xl w-full">
+        <i class="fa-solid fa-chevron-left cursor-pointer py-3 px-5 text-hover-alstom-red"
+            onclick="showPreviousImage();"></i>
+        <i class="fa-solid fa-chevron-right cursor-pointer py-3 px-5 text-hover-alstom-red"
+            onclick="showNextImage()"></i>
+    </div>
+
+    <div class="flex flex-col  justify-start items-start my-5 mx-6 w-full md:w-1/2">
+        <!-- Bouton "En savoir plus" à gauche de la balise p -->
+        <div class="bg-black bg-opacity-70 p-4 transition rounded-xl">
+            <h1 class="bh1  text-white text-2xl md:text-3xl lg:text-4xl mb-2 md:mb-4">
+                Présentation
+                générale</h1>
+            <p class=" text-white text-base md:text-lg lg:text-xl mb-4 md:mb-6 text-justify t">
+                AItem représente une initiative conjointe entre Alstom et un projet d'intelligence artificielle dans le
+                cadre des Défi Chal'enge. Ce programme, protégé par une authentification par login, a pour objectif de
+                classer des modèles 3D en fonction de leur similitude et d'estimer le coût associé à chaque pièce. Il
+                s'agit d'une démonstration conceptuelle visant à fournir une version préliminaire visuelle et
+                opérationnelle du produit final.
+            </p>
+        </div>
+    </div>
+    <div class="flex flex-col justify-center items-center py-3 px-5 cursor-pointer text-gray-100 text-hover-alstom-red fa-2xl w-full"
+        onclick="scrollToSection()">
+        <div>
+            <p class="text-1xl mb-6">en savoir plus</p>
+        </div>
+        <div>
+            <i class="fa-solid fa-chevron-down"></i>
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+<div id="section-en-savoir-plus" class="justify-center flex flex-col fond2 my-8 min-h-screen w-full">
+    <div class="flex justify-around w-full container-button mt-2 ">
+        <div class="flex flex-col div_presentation justify-top items-center" onclick="toggleColor(this),showSlide(0)"
+            onmouseover="addHoverClass(this)" onmouseout="removeHoverClass(this)">
+            <p class="buttonn1 color-alstom-blue ">Défi Chall'enge </p>
+            <div class="bg-gray-300 h-px w-full  my-2 barre1"></div>
+            <span class="t-buton">Le défi Chall'enge présenté <br>dans les grandes lignes.</span>
+        </div>
+
+        <div class="flex flex-col div_presentation justify-top items-center" onclick="toggleColor(this),showSlide(1)"
+            onmouseover="addHoverClass(this)" onmouseout="removeHoverClass(this)">
+            <p class="buttonn2 color-alstom-blue ">Le projet de Alstom. </p>
+            <div class="bg-gray-300 h-px w-full  my-2 barre2"></div>
+            <span class="t-buton">L'histoire de notre projet <br> avec Alstom.</span>
+        </div>
+
+        <div class="flex flex-col div_presentation justify-top items-center" onclick="toggleColor(this), showSlide(2)"
+            onmouseover="addHoverClass(this)" onmouseout="removeHoverClass(this)">
+            <p class="buttonn3 color-alstom-blue ">AItem</p>
+            <div class="bg-gray-300 h-px w-full  my-1 barre3"></div>
+            <span class="t-buton">Notre solution ! <br> ce projet. </span>
+        </div>
+
+        <div class="flex flex-col div_presentation justify-top items-center" onclick="toggleColor(this) ,showSlide(3)"
+            onmouseover="addHoverClass(this)" onmouseout="removeHoverClass(this)">
+            <p class="buttonn4 color-alstom-blue ">Crédit </p>
+            <div class="bg-gray-300 h-px w-full  my-2 barre4"></div>
+            <span class="t-buton"> l'équipe <br> d'AItem.</span>
+        </div>
+    </div>
+
+
+    <div class="slider w-full overflow-hidden mt-12 ">
+        <div class="slider-container">
+
+            <!-- Slide 1 -->
+            <div class="slide1 slide text-black flex items-center justify-center relative">
+
+
+                <div
+                    class="module1-3 absolute transition-transform transform  p-4 rounded-lg  flex items-center justify-center">
+                    <h1
+                        class="flex flex-col justify-center items-center text-3xl md:text-4xl lg:text-5xl font-bold  text-gray-800">
+                        <p class=" font-extrabold">10<sup class="text-orange-500">e</sup> édition</p>
+                        <p class="font-semibold">Défi Chal'enge</p>
+
+                    </h1>
+                </div>
+                <div class="module1-1 absolute transition-transform bg-cover bg-no-repeat transform  rounded-lg shadow-md"
+                    style="background-image: url('{% static 'assets/img/fond-defi-chal.png' %}')">
+
+
+                </div>
+
+                <div class="module1-4 absolute transition-transform transform p-4 rounded-lg">
+
+                    <p class="text-justify leading-loose text-gray-800">
+                        <span class=" text-2xl md:text-3xl lg:text-4xl font-bold leading-tight "
+                            style="color:#7f7fff;">L</span>e
+                        Défi chal'enge
+                        est une compétition sur deux semaines visant la réalisation d'un démonstrateur innovant
+                        destiné
+                        aux entreprises partenaires.
+                    </p>
+
+                    <p class=" leading-loose text-justify text-gray-800">
+                        <span class="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight "
+                            style="color:#7f7fff;">L</span>es
+                        étudiants ont engagé des
+                        démarches auprès des entreprises pour présenter les outils de réalité virtuelle, réalité
+                        augmentée et d'Intelligence Artificielle,
+                        et discuter des opportunités offertes par ces technologies.
+                    </p>
+
+
+                </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class=" slide2  slide  text-black flex items-center justify-center">
+
+                <!-- bas gauche -->
+                <div
+                    class=" module2-2  flex items-center justify-center absolute transition-transform transform  p-4 rounded-lg">
+                    <p class="text-black leading-relaxed font-sans"> Le Projet
+                        Alstom
+                    </p>
+
+                </div>
+
+                <!-- haut gauche -->
+                <div class="module2-3 mt-1 ml-1 absolute transition-transform transform p-4 rounded-lg shadow-md flex items-center justify-center bg-contain bg-no-repeat"
+                    style="background-image: url('{% static 'assets/img/backgroundtrain.jpg' %}');
+                                 background-size: cover;">
+                </div>
+                <div
+                    class="module2-1  flex items-center justify-center absolute transition-transform transform p-4 rounded-lg">
+
+                    <p
+                        class="text-alstom-blue text-justify leading-relaxed text-grayfont-sans text-lg md:text-xl lg:text-2xl xl:text-3xl">
+                        <span
+                            class="text-xl md:text-2xl lg:text-3xl font-bold leading-tight text-alstom-blue">A</span>lstom
+
+                        doit gérer une gamme variée de produits personnalisés, générant des codes distincts pour
+                        des pièces similaires. Cette complexité entrave la comparaison des prix et des
+                        fournisseurs,
+                        impactant les coûts de production et la rentabilité. Simplifier la gestion des pièces
+                        similaires
+                        et les regroupés est essentiel pour améliorer l'efficacité et la
+                        compétitivité du service achat.
+                    </p>
+
+
+                </div>
+            </div>
+
+            <!-- haut droite -->
+
+            <!-- Slide 3 -->
+            <div class="slide3 slide text-black flex items-center justify-center">
+                <video width="90%" height="90%" controls>
+                    <source src="{% static 'assets/img/V1.mp4' %}" type="video/mp4">
+
+                </video>
+            </div>
+            <!-- Slide 4 -->
+            <div class="slide4 slide">
+                <!-- Présentation des parties prenantes avec Tailwind CSS en quatre carrés égaux -->
+                <div class="h-full grid grid-cols-2 grid-rows-2 gap-4 ">
+
+                    <!-- Carré en haut à gauche avec les logos -->
+
+                    <div class="bg-white shadow-lg rounded-lg  flex justify-center items-center text-center">
+                        <div class="pb-10">
+                            <h2 class=" font-bold text-gray-800 mb-2" style=" font-size:2vw">Étudiants</h2>
+                            <h2 class=" font-bold text-gray-800 mb-2" style=" font-size:1.5vw">Diplôme
+                                d'Ingénieur IA &
+                                Big Data</h2>
+                            <ul class="list-none space-y-2 text-gray-800">
+                                <li>
+                                    <span class="bg-blue-200 px-2 py-1 rounded-full font-semibold"
+                                        style=" font-size:1vw">Anatole
+                                        MARTENNE</span>
+                                </li>
+                                <li>
+                                    <span class="bg-purple-200 px-2 py-1 rounded-full font-semibold"
+                                        style=" font-size:1vw">Kévin
+                                        FERREIRA</span>
+                                </li>
+                                <li>
+                                    <span class="bg-red-200 px-2 py-1 rounded-full font-semibold"
+                                        style=" font-size:1vw">Jules KANTZER</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Carré en haut à droite pour Alstom -->
+                    <div class="bg-white shadow-lg rounded-lg  flex justify-center items-center text-center">
+                        <div class="pb-10">
+                            <h2 class=" font-bold text-gray-800 mb-2" style=" font-size:2vw">Étudiants</h2>
+                            <h2 class=" font-bold text-gray-800 mb-2" style=" font-size:1.5vw">Licence
+                                d'Informatique
+                                Générale</h2>
+                            <ul class="list-none space-y-2 text-gray-800">
+                                <li>
+                                    <span class="bg-indigo-200 px-2 py-1 rounded-full font-semibold"
+                                        style=" font-size:1vw">Arthur
+                                        CIESLAR</span>
+                                </li>
+                                <li>
+                                    <span class="bg-yellow-200 px-2 py-1 rounded-full font-semibold"
+                                        style=" font-size:1vw">Alban
+                                        ROUAULT</span>
+                                </li>
+                                <li>
+                                    <span class="bg-purple-200 px-2 py-1 rounded-full font-semibold"
+                                        style=" font-size:1vw">Victor
+                                        VAIZAND</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Carré en bas à gauche pour les élèves en IA Big Data -->
+                    <div class="bg-white shadow-lg rounded-lg  flex justify-center items-center text-center">
+                        <div class="pb-10">
+                            <h2 class=" font-bold text-gray-800 mb-2" style=" font-size:2vw">Alstom - Le Creusot
+                            </h2>
+                            <h2 class=" font-bold text-gray-800 mb-8" style="font-size:1.5vw">Service Achat</h2>
+                            <ul class="list-none space-y-2 text-gray-800">
+                                <li>
+                                    <span class="bg-purple-200  px-2 py-1 rounded-full font-semibold"
+                                        style=" font-size:1vw">Baptiste
+                                        DUCHAMP</span>
+                                </li>
+                                <li>
+                                    <span class="bg-green-200 px-2 py-1 rounded-full font-semibold"
+                                        style=" font-size:1vw">Thomas
+                                        BEAUMENIL</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Carré en bas à droite pour les élèves en Licence informatique -->
+                    <div class="bg-white shadow-lg rounded-lg  flex justify-center items-center text-center">
+                        <div class="pb-14">
+                            <h2 class=" font-bold text-gray-800 mb-2" style=" font-size:2vw">Partenaire externe
+                            </h2>
+                            <h2 class=" font-bold text-gray-800 mb-8" style=" font-size:1.5vw">Designer logo
+                            </h2>
+                            <ul class="list-none space-y-2 text-gray-800">
+                                <li>
+                                    <span class="bg-pink-200 px-2 py-1 rounded-full font-semibold"
+                                        style=" font-size:1vw">Alexandre Maillot / Pro: alx.graphisme</span>
+                                </li>
+
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+<script>
+    function toggleColor(element) {
+        var allDivs = document.querySelectorAll('.div_presentation');
+        allDivs.forEach(function (div) {
+            div.classList.remove('active');
+        });
+        element.classList.add('active');
+    }
+
+    function addHoverClass(element) {
+        element.classList.add('hovered');
+    }
+
+    function removeHoverClass(element) {
+        element.classList.remove('hovered');
+    }
+
+    const totalSlides = document.querySelectorAll('.slide').length;
+    const sliderContainer = document.querySelector('.slider-container');
+
+    function showSlide(slideIndex) {
+        const slideWidth = document.querySelector('.slide').offsetWidth; // Largeur d'une diapositive
+        const margin = 0.02 * window.innerWidth; // Marge de 2% de la largeur de la fenêtre
+
+        const translateValue = -(slideIndex * (slideWidth + 5 * margin)) + 'px';
+        sliderContainer.style.transform = 'translateX(' + translateValue + ')';
+    }
+
+
+    function scrollToSection() {
+        const section = document.getElementById('section-en-savoir-plus');
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
+
+
+    function toggleText() {
+        var content = document.getElementById('content');
+        var chevron = document.getElementById('chevron');
+
+        if (content.style.display === 'block' || content.style.display === '') {
+            content.style.display = 'none';
+            chevron.innerHTML = '&#9658;';
+        } else {
+            content.style.display = 'block';
+            chevron.innerHTML = '&#9660;';
+        }
+    }
+
+</script>
+
+</body>
+
+</html>
+
+{% endblock %}

@@ -1,0 +1,463 @@
+.bg-alstom-blue {
+    background-color: #1e3246;
+    /* Remplacez cette couleur par celle de votre choix */
+}
+
+.color-alstom-blue {
+    color: #1e3246;
+}
+
+.text-hover-alstom-blue:hover {
+    color: #1e3246;
+}
+
+.color-alstom-red {
+    color: #dc3223;
+}
+
+.text-hover-alstom-red:hover {
+    color: #dc3223;
+}
+
+a:hover {
+    color: #dc3223;
+}
+
+button:hover {
+    background-color: rgba(30, 50, 70, 0.74);
+}
+
+input:focus {
+    border-color: #1e3246;
+    border-width: 0.5px;
+}
+
+
+.nav {
+    z-index: 1000;
+    position: float;
+}
+
+/* Ajoutez des styles supplémentaires ici si nécessaire */
+.slider {
+    overflow: hidden;
+}
+
+.slider-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+
+.slide1 {
+    margin-left: 10%;
+    margin-right: 5%;
+    margin-bottom: 2%;
+    --tw-shadow-color: #d1fae5;
+    --tw-shadow-color: #14b8a6;
+}
+
+.module1-4 {
+    background-color: #fcfcfc;
+    top: 6%;
+    right: 1%;
+    width: 20%;
+    height: 40vh;
+    min-height: 27vw;
+    z-index: 500;
+    box-shadow: -4px 4px 10px 5px #46529c84;
+    /* Ajout de décalages pour l'ombre */
+    transition: box-shadow 0.1s ease;
+}
+
+.slide4 {
+    margin-left: 5%;
+    margin-right: 10%;
+
+}
+
+.slide2 {
+    margin-left: 5%;
+    margin-right: 5%;
+
+}
+
+.slide3 {
+    margin-left: 5%;
+    margin-right: 5%;
+
+}
+
+.slide {
+    flex: 0 0 calc(80%);
+    /* Ajustez la largeur des slides selon vos besoins, avec une marge totale de 4% (2% de chaque côté) */
+    box-sizing: border-box;
+    height: 38vw;
+    color: #fff;
+    padding: 10px;
+    border-radius: 40px;
+    transform: translateZ(10px);
+
+}
+
+.fond1 {
+    height: 100vh;
+}
+
+.presentation-div {
+    color: #292828;
+    padding: 10px;
+    border: 0px solid #fffefe;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(174, 173, 173, 0.8);
+    /* Effet d'ombre accentué */
+    max-width: 600px;
+    width: 50vw;
+    min-width: 300px;
+    text-align: center;
+
+
+}
+
+.body {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: absolute;
+}
+
+.presentation-div h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.presentation-div p {
+    font-size: 1.6rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+
+
+}
+
+.div_presentation {
+    width: 22%;
+    height: 100%;
+    border-radius: 20px;
+    text-align: center;
+    white-space: normal;
+    cursor: pointer;
+}
+
+
+
+.container-button {
+    height: 9vw;
+}
+
+.fond2 {
+    background: linear-gradient(to bottom, #fcfcfc, #ffffff);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+.voile {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+}
+
+.voile-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+.fa-spinner {
+    font-size: 24px;
+    /* Ajustez la taille du spinner selon vos préférences */
+    margin-bottom: 10px;
+    /* Espace entre le spinner et le texte */
+}
+
+#messageSpan {
+    display: block;
+}
+
+.div_presentation.hovered .barre1,
+.div_presentation.active .barre1 {
+    background-color: blue;
+}
+
+.div_presentation_slide {
+    background-color: blue;
+}
+
+
+.div_presentation.hovered .buttonn1,
+.div_presentation.active .buttonn1 {
+    color: #7f7fff;
+}
+
+.div_presentation.hovered .barre2,
+.div_presentation.active .barre2 {
+    background-color: #dc3223;
+}
+
+
+.div_presentation.hovered .buttonn2,
+.div_presentation.active .buttonn2 {
+    color: #dc3223;
+}
+
+.div_presentation.hovered .barre3,
+.div_presentation.active .barre3 {
+    background-color: #1e3246;
+}
+
+
+.div_presentation.hovered .buttonn3,
+.div_presentation.active .buttonn3 {
+    color: #1e3246;
+}
+
+.div_presentation.hovered .barre4,
+.div_presentation.active .barre4 {
+    background-color: #fdb9f7;
+}
+
+
+.div_presentation.hovered .buttonn4,
+.div_presentation.active .buttonn4 {
+    color: #fdb9f7;
+}
+
+/* Personnalisation de la scrollbar */
+
+/* Largeur de la scrollbar et bord arrondis */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Couleur de la poignée de la scrollbar (lorsqu'elle est cliquée) */
+::-webkit-scrollbar-thumb {
+    background-color: #4a5568;
+    border-radius: 8px;
+    border: 3px solid #1e3246;
+}
+
+/* Couleur de la piste de la scrollbar */
+::-webkit-scrollbar-track {
+    background-color: #1e3246;
+}
+
+/* Copier le titre des graphs plotly */
+.plotly .user-select-none {
+    user-select: text !important;
+}
+
+/* Style pour les suggestions d'items */
+#searchSuggestions {
+    list-style: none;
+    /* Supprimer les puces de la liste */
+    padding: 0;
+    margin: 0;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    max-height: 200px;
+    /* Ajustez la hauteur maximale selon vos besoins */
+    overflow-y: auto;
+}
+
+#searchSuggestions li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: #606266;
+}
+
+#searchSuggestions li:hover {
+    background-color: #f3f3f3;
+    /* Couleur de fond au survol */
+    color: #dc3223;
+}
+
+.bouton-top {
+    color: black;
+    border-radius: 10px;
+    padding-right: 2%;
+    padding-left: 2%;
+    padding-top: 0.3%;
+    padding-bottom: 0.3%;
+}
+
+.box_categorie {
+    height: fit-content;
+}
+
+.break-word {
+    /* Coupe le texte, même si c'est un mot si c'est trop grand */
+    word-wrap: break-word;
+    overflow: hidden;
+}
+
+
+.module1-1 {
+    border: 0px solid white;
+    border-radius: 20px;
+    bottom: 2%;
+    left: 2%;
+    width: 57.5%;
+    height: 70%;
+
+}
+
+.module1-4:hover {
+    transform: scale(1.01);
+}
+
+
+.module1-2 {
+    border: 0px solid white;
+    border-radius: 10px;
+    bottom: 2%;
+    left: 1%;
+    width: 49%;
+    height: 49%;
+}
+
+.module1-3 {
+    border: 0px solid white;
+    border-radius: 10px;
+    top: 3%;
+    left: 13%;
+    width: 35%;
+    height: 25%;
+}
+
+.module1-3 h1 p {
+    font-size: 3.3vw;
+}
+
+.module1-4 {
+    background-color: #fcfcfc;
+
+    top: 3%;
+    right: 1%;
+    width: 45%;
+    height: 40vh;
+    min-height: 27vw;
+    z-index: 500;
+
+}
+
+.module1-4 p {
+    font-size: 1.3vw;
+}
+
+
+.module2-1 {
+    border: 0px solid white;
+    border-radius: 15px;
+    bottom: 2%;
+    right: 1%;
+    width: 49%;
+    height: 49%;
+    z-index: 500;
+    background-color: #fcfcfc;
+    box-shadow: 4px 4px 10px 5px #68681571;
+    /* Ajout de décalages pour l'ombre */
+    transition: box-shadow 0.1s ease;
+}
+
+.module2-1 p {
+    font-size: 1.4vw;
+
+
+}
+
+.module2-1:hover {
+    transform: scale(1.01);
+}
+
+
+.module2-2 {
+    border-radius: 10px;
+    bottom: 2%;
+    left: 1%;
+    width: 45%;
+    height: 24%;
+}
+
+.module2-2 {
+    font-size: 3vw;
+}
+
+.module2-3 {
+    border: 0px solid white;
+    border-radius: 10px;
+    top: 1%;
+    left: 1%;
+    width: 70%;
+    height: 70%;
+}
+
+.module2-4 {
+    border: 0px solid white;
+    border-radius: 10px;
+    top: 8%;
+    right: 1%;
+    width: 27%;
+    height: 47%;
+}
+
+
+
+
+.module3 {
+    border: 0px solid white;
+    border-radius: 10px;
+    top: 2%;
+    left: 0%;
+    width: 98%;
+    height: 98%;
+}
+
+.module4 {
+    border: 0px solid white;
+    border-radius: 10px;
+    bottom: 2%;
+    left: 2%;
+    width: 98%;
+    height: 98%;
+}
+
+@media screen and (max-width: 900px) {
+    .div_presentation .t-buton {
+        display: none;
+    }
+}
+
+.div_presentation .t-buton {
+    font-size: 1rem;
+
+
+}
+
+.t {
+    border-radius: 10px;
+}
+
+
+.bh1 {
+    width: 61%;
+    border-radius: 10px;
+}

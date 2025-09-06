@@ -1,0 +1,7 @@
+<!-- ComponentBoutonObjet.html -->
+<div x-data="boutonObjet()">
+    <label class="flex items-center cursor-pointer">
+        <input type="radio" x-model="checked" x-on:change="checkOnlyOne" class="form-radio text-indigo-600">
+        <span class="ml-2">{{ item.nom }}</span>
+    </label>
+</div>
