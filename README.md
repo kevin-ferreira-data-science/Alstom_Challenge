@@ -1,3 +1,8 @@
+
+AITEM is a web platform developed for Alstom buyers, enabling them to assess whether a part can be reused. By identifying components that only require minor machining, the tool supports cost reduction and sustainability by allowing parts to be integrated into trains rather than discarded.
+
+
+
 Objective:
 Collaboration with Alstom to promote VR/AR and AI in Bourgogne-Franche-Comté, creating public-private partnerships and fostering innovation.
 
